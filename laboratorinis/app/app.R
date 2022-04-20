@@ -5,17 +5,16 @@ library(dplyr)
 library(shiny)
 library(readr)
 
-a<- read_csv("https://raw.githubusercontent.com/JustasBalandis/KTU-duomenu-vizualizacija/main/laboratorinis/data/lab_sodra.csv")
-a1=a[a$ecoActCode==479100,]
+lab_sodra<- read_csv("https://raw.githubusercontent.com/JustasBalandis/KTU-duomenu-vizualizacija/main/laboratorinis/data/lab_sodra.csv")
+labS=lab_sodra[lab_sodra$ecoActCode==479100,]
 
 ui = fluidPage(titlePanel("Jûsø ekonominës veiklos srities pavadinimas"),sidebarLayout(sidebarPanel(selectInput(inputId = "n",
-            label="Áveskite ámonës kodà",choices = a1$code,selected=NULL)),
+            label="Áveskite ámonës kodà",choices = labS$code,selected=NULL)),
                          mainPanel(plotOutput("aaa")) ))
 
 server = function(input, output,session){
-  a<- read_csv("https://raw.githubusercontent.com/JustasBalandis/KTU-duomenu-vizualizacija/main/laboratorinis/data/lab_sodra.csv")
-  a1=a[a$ecoActCode==479100,]
-  output$aaa =renderPlot( ggplot(a1[a1$code==input$n,],aes(x=month,y=avgWage))+geom_line(aes(y=avgWage,color="red")))
+  
+  output$aaa =renderPlot( ggplot(labS[labS$code==input$n,],aes(x=month,y=avgWage))+geom_line(aes(y=avgWage,color="red")))
 }
 shinyApp(ui=ui, server=server)
   
